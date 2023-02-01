@@ -52,6 +52,7 @@ button_start = Button(WAIT, 550, 150, 100, 50,"Start")
 button_skin = Button(WAIT, 550, 250, 100, 50,"Skin")  
 button_exit = Button(WAIT, 550, 350, 100, 50,"Exit")  
 
+
 button_enemi1 = Button(WAIT,350,350,100,50,"Lyffi")
 button_enemi2 = Button(WAIT,550,350,100,50,"Sanji")
 button_enemi3 = Button(WAIT,750,350,100,50,"Frenk")
@@ -163,66 +164,49 @@ players_game.add(player,player3,player5)"""
 bullets = pygame.sprite.Group()
 
 
-enemies = pygame.sprite.Group()
+enemies_1 = pygame.sprite.Group()
 worog = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1200)
-enemies.add(worog)
 worog2 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
-enemies.add(worog2)
+enemies_1.add(worog,worog2)
+enemies_2 = pygame.sprite.Group()
+worog3 = Enemy(1100, 500, 100, 100, path_file("dofi.png"), 3, "left", 800, 1200)
+worog4 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
+worog5 = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1000)
+enemies_2.add(worog3,worog4, worog5)
+
 
 hpPas = GamaSpritr(550, 90, 100, 100, path_file("ydon.png"))
 cel = GamaSpritr(850, 380, 110, 110, path_file("korona.png"))
 
 walls = pygame.sprite.Group()
 wall_1 = GamaSpritr(0, 0, 20, 200,path_file("ctena.png"))
-walls.add(wall_1)
 wall_2 = GamaSpritr(0, 200, 20, 200,path_file("ctena.png"))
-walls.add(wall_2)
 wall_3 = GamaSpritr(0, 400, 20, 200,path_file("ctena.png"))
-walls.add(wall_3)
 wall_4 = GamaSpritr(140, 0, 20, 200,path_file("ctena.png"))
-walls.add(wall_4)
 wall_5 = GamaSpritr(0, 600, 20, 200,path_file("ctena.png"))
-walls.add(wall_5)
 wall_6 = GamaSpritr(140, 200, 200, 20,path_file("ctena.png"))
-walls.add(wall_6)
 wall_7 = GamaSpritr(320, 100, 20, 100,path_file("ctena.png"))
-walls.add(wall_7)
 wall_8 = GamaSpritr(320, 200, 20, 200,path_file("ctena.png"))
-walls.add(wall_8)
 wall_9 = GamaSpritr(130, 400, 190, 20,path_file("ctena.png"))
-walls.add(wall_9)
 wall_10 = GamaSpritr(320, 400, 20, 80,path_file("ctena.png"))
-walls.add(wall_10)
 wall_11 = GamaSpritr(320, 470, 75, 20,path_file("ctena.png"))
-walls.add(wall_11)
 wall_12 = GamaSpritr(510, 500, 20, 200,path_file("ctena.png"))
-walls.add(wall_12)
 wall_13 = GamaSpritr(510, 300, 100, 20,path_file("ctena.png"))
-walls.add(wall_13)
 wall_14 = GamaSpritr(510, 400, 20, 200,path_file("ctena.png"))
-walls.add(wall_14)
 wall_15 = GamaSpritr(510, 300, 20, 200,path_file("ctena.png"))
-walls.add(wall_15)
 wall_16 = GamaSpritr(520, 0, 20, 180,path_file("ctena.png"))
-walls.add(wall_16)
 wall_17 = GamaSpritr(520, 180, 200, 20,path_file("ctena.png"))
-walls.add(wall_17)
 wall_18 = GamaSpritr(610, 300, 20, 200,path_file("ctena.png"))
-walls.add(wall_18)
 wall_19 = GamaSpritr(750, 300, 20, 190,path_file("ctena.png"))
-walls.add(wall_19)
 wall_20 = GamaSpritr(750, 300, 200, 20,path_file("ctena.png"))
-walls.add(wall_20)
 wall_21 = GamaSpritr(700, 180, 200, 20,path_file("ctena.png"))
-walls.add(wall_21)
 wall_22 = GamaSpritr(900, 0, 20, 60,path_file("ctena.png"))
-walls.add(wall_22)
 wall_23 = GamaSpritr(750, 470, 200, 20,path_file("ctena.png"))
-walls.add(wall_23)
 wall_24 = GamaSpritr(950, 470, 120, 20,path_file("ctena.png"))
-walls.add(wall_24)
 wall_25 = GamaSpritr(800, 300, 500, 20,path_file("ctena.png"))
-walls.add(wall_25)
+walls.add(wall_1,wall_2,wall_3, wall_4, wall_5, wall_6, wall_7, wall_8, wall_9, wall_10, wall_11, wall_12, wall_13, wall_14, wall_15, wall_16, wall_17, wall_18, wall_19, wall_20, wall_21, wall_22, wall_23, wall_24, wall_25)
+
+
 
 level = 0
 
@@ -234,6 +218,7 @@ while game == True:
         if event.type == pygame.QUIT:
             game = False
         
+
         if level == 0:
             if event.type == pygame.MOUSEMOTION:
                 x,y = event.pos
@@ -245,6 +230,7 @@ while game == True:
                 
                 elif button_skin.rect.collidepoint(x,y):
                     button_skin.color = GRAY
+                
 
                 else:
                     button_start.color = WAIT
@@ -261,7 +247,7 @@ while game == True:
                     game = False
             
 
-        elif level == 1:            
+        elif level == 1 or level == 1.1 or level == 1.2:            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speed_x = 5
@@ -329,8 +315,8 @@ while game == True:
             window.blit(fon, (0,0)) 
             player.reset()
             player.update()
-            enemies.draw(window)
-            enemies.update()
+            enemies_1.draw(window)
+            enemies_1.update()
             hpPas.reset()
             cel.reset()
             walls.draw(window)
@@ -341,16 +327,16 @@ while game == True:
 
 
             if pygame.sprite.collide_rect(player, cel):
-                play = False
-                window.blit(win_picture,(0,0))
-                pygame.mixer.music.stop()
-                music_win.play()
-                pygame.mixer.music.stop()
+                #play = False
+                #window.blit(win_picture,(0,0))
+                #pygame.mixer.music.stop()
+                #music_win.play()
+                #pygame.mixer.music.stop()
                 
-                #level = 1.2
+                level = 1.2
             
 
-            if pygame.sprite.spritecollide(player, enemies, False):
+            if pygame.sprite.spritecollide(player, enemies_1, False):
                 play = False
                 window.blit(lose_picture,(0,0))
                 pygame.mixer.music.stop()
@@ -358,35 +344,35 @@ while game == True:
                 pygame.mixer.music.stop()
 
             pygame.sprite.groupcollide(bullets, walls, True, False)
-            pygame.sprite.groupcollide(bullets, enemies, True, True)
+            pygame.sprite.groupcollide(bullets, enemies_1, True, True)
     elif level == 1.2:
         if play == True:
             window.blit(fon, (0,0)) 
             player.reset()
             player.update()
-            #enemies.draw(window)
-            #enemies.update()
+            enemies_2.draw(window)
+            enemies_2.update()
             #hpPas.reset()
             #cel.reset()
-            #walls.draw(window)
-            #bullets.draw(window)
-            #bullets.update()
+            walls.draw(window)
+            bullets.draw(window)
+            bullets.update()
 
             """if pygame.sprite.collide_rect(player, cel):
                 play = False
                 window.blit(win_picture,(0,0))
                 pygame.mixer.music.stop()
                 music_win.play()
-                level = 1.3
+                level = 1.3"""
 
-            if pygame.sprite.spritecollide(player, enemies, False):
+            if pygame.sprite.spritecollide(player, enemies_2, False):
                 play = False
                 window.blit(lose_picture,(0,0))
                 pygame.mixer.music.stop()
                 music_lose.play()
 
             pygame.sprite.groupcollide(bullets, walls, True, False)
-            pygame.sprite.groupcollide(bullets, enemies, True, True)"""
+            pygame.sprite.groupcollide(bullets, enemies_2, True, True)
 
 
     elif level == 2:
