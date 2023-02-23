@@ -51,6 +51,8 @@ class Button():
 button_start = Button(WAIT, 550, 150, 100, 50,"Start")      
 button_skin = Button(WAIT, 550, 250, 100, 50,"Skin")  
 button_exit = Button(WAIT, 550, 350, 100, 50,"Exit")  
+button_menu = Button(WAIT, 1100, 0, 100, 50,"Menu")
+button_reset = Button(WAIT, 500, 450, 100, 50,"Reset")
 
 
 button_enemi1 = Button(WAIT,350,350,100,50,"Lyffi")
@@ -149,17 +151,15 @@ class Enemy(GamaSpritr):
             if self.rect.bottom >= self.max_coord:
                 self.direction = "up"
 
-"""players_skin = pygame.sprite.Group()
+players_skin = pygame.sprite.Group()
 player2 = Player(350, 230, 100, 100, path_file("luffi.png"))
 player4 = Player(550, 230, 100, 100, path_file("candi.png"))
 player6 = Player(750, 230, 100, 100, path_file("frenk.png"))
-players_skin.add(player2,player4,player6)"""
+players_skin.add(player2,player4,player6)
+
 player = Player(30, 0, 100, 100, path_file("luffi.png"))
-"""players_game = pygame.sprite.Group()
-player = Player(30, 0, 100, 100, path_file("luffi.png"))
-player3 = Player(30, 0, 100, 100, path_file("candi.png"))
-player5 = Player(30, 0, 100, 100, path_file("frenk.png"))
-players_game.add(player,player3,player5)"""
+
+
 
 bullets = pygame.sprite.Group()
 
@@ -247,7 +247,21 @@ while game == True:
                     game = False
             
 
-        elif level == 1 or level == 1.1 or level == 1.2:            
+        elif level == 1 or level == 1.1 or level == 1.2 or level == 10:   
+            if event.type == pygame.MOUSEMOTION:
+                x,y = event.pos
+                if button_menu.rect.collidepoint(x,y):
+                    button_menu.color = GRAY
+                elif button_reset.rect.collidepoint(x,y):
+                    button_reset.color = GRAY               
+                else:
+                    button_menu.color = WAIT
+                    button_reset.color = WAIT
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y =  event.pos
+                if button_menu.rect.collidepoint(x,y):
+                    level = 0                
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speed_x = 5
@@ -265,8 +279,6 @@ while game == True:
                     music_shoot.play()
                     player.shoot()
                     
-
-
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.speed_x = 0
@@ -276,6 +288,7 @@ while game == True:
                     player.speed_y = 0
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     player.speed_y = 0
+
         elif level == 2:
             if event.type == pygame.MOUSEMOTION:
                 x,y = event.pos
@@ -287,23 +300,30 @@ while game == True:
                 
                 elif button_enemi3.rect.collidepoint(x,y):
                     button_enemi3.color = GRAY
-
                 else:
                     button_enemi1.color = WAIT
                     button_enemi2.color = WAIT
-                    button_enemi3.color = WAIT       
+                    button_enemi3.color = WAIT 
+             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x,y =  event.pos     
                 if button_enemi1.rect.collidepoint(x,y):
-                    self.kill(player3)
-                    self.kill(player5)
+                    player = Player(30, 0, 100, 100, path_file("luffi.png"))
+                    level = 1
                 elif button_enemi2.rect.collidepoint(x,y):
-                    self.kill(player)
-                    self.kill(player5)
+                    player = Player(30, 0, 100, 100, path_file("candi.png"))
+                    level = 1
                 elif button_enemi3.rect.collidepoint(x,y):
-                    self.kill(player)
-                    self.kill(player3)
-    
+                    player = Player(30, 0, 100, 100, path_file("frenk.png"))
+                    level = 1
+        
+        elif level == 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x,y =  event.pos     
+                if button_reset.rect.collidepoint(x,y):
+                    level = 1
+                    
+
 
     if level == 0:
         window.blit(fon,(0,0))
@@ -313,6 +333,7 @@ while game == True:
     elif level == 1:
         if play == True:
             window.blit(fon, (0,0)) 
+            button_menu.button_show(18, 10)
             player.reset()
             player.update()
             enemies_1.draw(window)
@@ -323,31 +344,20 @@ while game == True:
             bullets.draw(window)
             bullets.update()
 
-            
-
-
+        
             if pygame.sprite.collide_rect(player, cel):
-                #play = False
-                #window.blit(win_picture,(0,0))
-                #pygame.mixer.music.stop()
-                #music_win.play()
-                #pygame.mixer.music.stop()
-                
                 level = 1.2
             
-
             if pygame.sprite.spritecollide(player, enemies_1, False):
-                play = False
-                window.blit(lose_picture,(0,0))
-                pygame.mixer.music.stop()
-                music_lose.play()
-                pygame.mixer.music.stop()
+                level = 10
 
             pygame.sprite.groupcollide(bullets, walls, True, False)
             pygame.sprite.groupcollide(bullets, enemies_1, True, True)
+
     elif level == 1.2:
         if play == True:
             window.blit(fon, (0,0)) 
+            button_menu.button_show(18, 10)
             player.reset()
             player.update()
             enemies_2.draw(window)
@@ -358,18 +368,13 @@ while game == True:
             bullets.draw(window)
             bullets.update()
 
-            """if pygame.sprite.collide_rect(player, cel):
-                play = False
-                window.blit(win_picture,(0,0))
-                pygame.mixer.music.stop()
-                music_win.play()
-                level = 1.3"""
+
 
             if pygame.sprite.spritecollide(player, enemies_2, False):
                 play = False
                 window.blit(lose_picture,(0,0))
-                pygame.mixer.music.stop()
-                music_lose.play()
+                #pygame.mixer.music.stop()
+                
 
             pygame.sprite.groupcollide(bullets, walls, True, False)
             pygame.sprite.groupcollide(bullets, enemies_2, True, True)
@@ -381,6 +386,12 @@ while game == True:
         button_enemi2.button_show(20,10)
         button_enemi3.button_show(22,10)
         players_skin.draw(window)
+
+    elif level == 10:  
+        window.blit(lose_picture,(0,0))
+        button_reset.button_show(10, 10)
+        pygame.mixer.music.stop()
+        music_lose.play()
 
     clock.tick(FPS)
     pygame.display.update()
