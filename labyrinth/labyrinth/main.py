@@ -158,11 +158,17 @@ player6 = Player(750, 230, 100, 100, path_file("frenk.png"))
 players_skin.add(player2,player4,player6)
 
 player = Player(30, 0, 100, 100, path_file("luffi.png"))
-
-
+key = GamaSpritr(30, 0, 100, 100, path_file("key.png"))
+lock = GamaSpritr(0, 0, 200, 20,path_file("lock.png"))
 
 bullets = pygame.sprite.Group()
 
+ydons = pygame.sprite.Group()
+ydon = GamaSpritr(550, 90, 100, 100, path_file("ydon.png"))
+ydons.add(ydon)
+ydons_2 = pygame.sprite.Group()
+ydon_2 = GamaSpritr(30, 0, 100, 100, path_file("ydon.png"))
+ydons_2.add( ydon_2)
 
 enemies_1 = pygame.sprite.Group()
 worog = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1200)
@@ -174,8 +180,6 @@ worog4 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
 worog5 = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1000)
 enemies_2.add(worog3,worog4, worog5)
 
-
-hpPas = GamaSpritr(550, 90, 100, 100, path_file("ydon.png"))
 cel = GamaSpritr(850, 380, 110, 110, path_file("korona.png"))
 
 walls = pygame.sprite.Group()
@@ -336,17 +340,22 @@ while game == True:
             button_menu.button_show(18, 10)
             player.reset()
             player.update()
+
+            lock.reset()
+
             enemies_1.draw(window)
             enemies_1.update()
-            hpPas.reset()
+            ydons.draw(window)
             cel.reset()
             walls.draw(window)
             bullets.draw(window)
             bullets.update()
 
         
-            if pygame.sprite.collide_rect(player, cel):
+            if pygame.sprite.collidecollide(player, ydons):
                 level = 1.2
+            if pygame.sprite.collidecollide(player,ydons_2):
+                level = 1.3
             
             if pygame.sprite.spritecollide(player, enemies_1, False):
                 level = 10
@@ -362,22 +371,34 @@ while game == True:
             player.update()
             enemies_2.draw(window)
             enemies_2.update()
-            #hpPas.reset()
+            ydons_2.draw(window)
             #cel.reset()
             walls.draw(window)
             bullets.draw(window)
             bullets.update()
 
-
-
             if pygame.sprite.spritecollide(player, enemies_2, False):
                 play = False
-                window.blit(lose_picture,(0,0))
+                level = 10
                 #pygame.mixer.music.stop()
-                
 
             pygame.sprite.groupcollide(bullets, walls, True, False)
             pygame.sprite.groupcollide(bullets, enemies_2, True, True)
+
+    elif level == 1.3:
+        if play == True:
+            window.blit(fon, (0,0)) 
+            button_menu.button_show(18, 10)
+            player.reset()
+            player.update()
+            enemies_2.draw(window)
+            enemies_2.update()
+            cel.reset()
+            #lock.reset()
+            bullets.draw(window)
+            bullets.update()
+
+            
 
 
     elif level == 2:
