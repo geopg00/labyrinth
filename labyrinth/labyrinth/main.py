@@ -33,6 +33,7 @@ pygame.mixer.music.load(path_file("sake_binksa.mp3"))
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 
+music_door_lock = pygame.mixer.Sound(path_file("door_lock.wav"))
 music_win = pygame.mixer.Sound(path_file("win.wav"))
 music_lose = pygame.mixer.Sound(path_file("lose.wav"))
 music_shoot = pygame.mixer.Sound(path_file("fair.wav"))
@@ -158,8 +159,13 @@ player6 = Player(750, 230, 100, 100, path_file("frenk.png"))
 players_skin.add(player2,player4,player6)
 
 player = Player(30, 0, 100, 100, path_file("luffi.png"))
-key = GamaSpritr(30, 0, 100, 100, path_file("key.png"))
-lock = GamaSpritr(0, 0, 200, 20,path_file("lock.png"))
+lock = GamaSpritr(625, 350, 125, 20, path_file("lock.png"))
+
+castles = pygame.sprite.Group()
+
+keys = pygame.sprite.Group()
+key = GamaSpritr(550, 90, 100, 100, path_file("key.png"))
+keys.add(key)
 
 bullets = pygame.sprite.Group()
 
@@ -175,14 +181,14 @@ worog = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1200)
 worog2 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
 enemies_1.add(worog,worog2)
 enemies_2 = pygame.sprite.Group()
-worog3 = Enemy(1100, 500, 100, 100, path_file("dofi.png"), 3, "left", 800, 1200)
 worog4 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
 worog5 = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1000)
-enemies_2.add(worog3,worog4, worog5)
+enemies_2.add(worog4, worog5)
 
 cel = GamaSpritr(850, 380, 110, 110, path_file("korona.png"))
 
 walls = pygame.sprite.Group()
+lock = GamaSpritr(625, 350, 125, 20, path_file("lock.png"))
 wall_1 = GamaSpritr(0, 0, 20, 200,path_file("ctena.png"))
 wall_2 = GamaSpritr(0, 200, 20, 200,path_file("ctena.png"))
 wall_3 = GamaSpritr(0, 400, 20, 200,path_file("ctena.png"))
@@ -208,15 +214,14 @@ wall_22 = GamaSpritr(900, 0, 20, 60,path_file("ctena.png"))
 wall_23 = GamaSpritr(750, 470, 200, 20,path_file("ctena.png"))
 wall_24 = GamaSpritr(950, 470, 120, 20,path_file("ctena.png"))
 wall_25 = GamaSpritr(800, 300, 500, 20,path_file("ctena.png"))
-walls.add(wall_1,wall_2,wall_3, wall_4, wall_5, wall_6, wall_7, wall_8, wall_9, wall_10, wall_11, wall_12, wall_13, wall_14, wall_15, wall_16, wall_17, wall_18, wall_19, wall_20, wall_21, wall_22, wall_23, wall_24, wall_25)
+walls.add(lock, wall_1,wall_2,wall_3, wall_4, wall_5, wall_6, wall_7, wall_8, wall_9, wall_10, wall_11, wall_12, wall_13, wall_14, wall_15, wall_16, wall_17, wall_18, wall_19, wall_20, wall_21, wall_22, wall_23, wall_24, wall_25)
 
 
 
 level = 0
 
-
 game = True
-play = True
+play = False
 while game == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -244,27 +249,49 @@ while game == True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x,y =  event.pos
                 if button_start.rect.collidepoint(x,y):
-                    level = 1
+                    if play == False:
+                        play = True
+
+                        player.rect.x = 30
+                        player.rect.y = 0
+
+                        bullets.empty()
+
+                        enemies_1 = pygame.sprite.Group()
+                        worog = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1200)
+                        worog2 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
+                        enemies_1.add(worog,worog2)
+                        enemies_2 = pygame.sprite.Group()
+                        worog4 = Enemy(400, 200, 100, 100, path_file("dofi.png"), 3, "down", 200, 600)
+                        worog5 = Enemy(1100, 200, 100, 100, path_file("dofi.png"), 3, "left", 500, 1000)
+                        enemies_2.add(worog4, worog5)
+
+                        pygame.mixer.music.load(path_file("sake_binksa.mp3"))
+                        pygame.mixer.music.set_volume(0.5)
+                        pygame.mixer.music.play(-1)
+
+                        level = 1
                 elif button_skin.rect.collidepoint(x,y):
                     level = 2
                 elif button_exit.rect.collidepoint(x,y):
                     game = False
             
 
-        elif level == 1 or level == 1.1 or level == 1.2 or level == 10:   
+        elif level == 1 or level == 1.1 or level == 1.2 or level == 1.3 or level == 10:   
             if event.type == pygame.MOUSEMOTION:
                 x,y = event.pos
                 if button_menu.rect.collidepoint(x,y):
                     button_menu.color = GRAY
-                elif button_reset.rect.collidepoint(x,y):
-                    button_reset.color = GRAY               
+                               
                 else:
                     button_menu.color = WAIT
-                    button_reset.color = WAIT
+                    
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x,y =  event.pos
                 if button_menu.rect.collidepoint(x,y):
-                    level = 0                
+                    level = 0 
+                    play = False
+                               
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
@@ -301,6 +328,9 @@ while game == True:
                  
                 elif button_enemi2.rect.collidepoint(x,y):
                     button_enemi2.color = GRAY
+
+                elif button_menu.rect.collidepoint(x,y):
+                    button_menu.color = GRAY
                 
                 elif button_enemi3.rect.collidepoint(x,y):
                     button_enemi3.color = GRAY
@@ -308,18 +338,24 @@ while game == True:
                     button_enemi1.color = WAIT
                     button_enemi2.color = WAIT
                     button_enemi3.color = WAIT 
+                    button_menu.color = WAIT
              
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x,y =  event.pos     
                 if button_enemi1.rect.collidepoint(x,y):
                     player = Player(30, 0, 100, 100, path_file("luffi.png"))
+                    play = True
                     level = 1
                 elif button_enemi2.rect.collidepoint(x,y):
                     player = Player(30, 0, 100, 100, path_file("candi.png"))
+                    play = True
                     level = 1
                 elif button_enemi3.rect.collidepoint(x,y):
                     player = Player(30, 0, 100, 100, path_file("frenk.png"))
+                    play = True
                     level = 1
+                elif button_menu.rect.collidepoint(x,y):
+                    level = 0
         
         elif level == 10:
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -340,9 +376,7 @@ while game == True:
             button_menu.button_show(18, 10)
             player.reset()
             player.update()
-
-            lock.reset()
-
+            
             enemies_1.draw(window)
             enemies_1.update()
             ydons.draw(window)
@@ -352,10 +386,9 @@ while game == True:
             bullets.update()
 
         
-            if pygame.sprite.collidecollide(player, ydons):
+            if pygame.sprite.spritecollide(player, ydons, True):
                 level = 1.2
-            if pygame.sprite.collidecollide(player,ydons_2):
-                level = 1.3
+            
             
             if pygame.sprite.spritecollide(player, enemies_1, False):
                 level = 10
@@ -377,8 +410,10 @@ while game == True:
             bullets.draw(window)
             bullets.update()
 
+            if pygame.sprite.spritecollide(player,ydons_2, True):
+                level = 1.3
+
             if pygame.sprite.spritecollide(player, enemies_2, False):
-                play = False
                 level = 10
                 #pygame.mixer.music.stop()
 
@@ -394,10 +429,30 @@ while game == True:
             enemies_2.draw(window)
             enemies_2.update()
             cel.reset()
-            #lock.reset()
+            walls.draw(window)
+            keys.draw(window)
+                
             bullets.draw(window)
             bullets.update()
+            castles.draw(window)
 
+            if pygame.sprite.spritecollide(player, keys, True):
+                lock.kill()
+                
+                castles.add(lock)
+            
+            if pygame.sprite.spritecollide(player, castles,True):
+                music_door_lock.play()
+
+            if pygame.sprite.collide_rect(player,cel):
+                pygame.mixer.music.stop()
+                music_win.play()
+                button_menu.button_show(18, 10)                
+                window.blit(win_picture,(0,0))
+
+            
+
+            pygame.sprite.groupcollide(bullets, walls, True, False)
             
 
 
@@ -405,15 +460,17 @@ while game == True:
         window.blit(fon,(0,0))
         button_enemi1.button_show(20,10)
         button_enemi2.button_show(20,10)
-        button_enemi3.button_show(22,10)
+        button_enemi3.button_show(20,10)
+        button_menu.button_show(18,10)
         players_skin.draw(window)
 
     elif level == 10:  
+        play = False
         window.blit(lose_picture,(0,0))
-        button_reset.button_show(10, 10)
+        button_menu.button_show(18, 10)
         pygame.mixer.music.stop()
         music_lose.play()
+        
 
     clock.tick(FPS)
     pygame.display.update()
-        
